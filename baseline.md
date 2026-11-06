@@ -49,7 +49,7 @@ Implementation target: a Google Colab notebook optimized for fast execution on a
 
 ## Step 4: Select and prepare the model
 
-The notebook must allow the model option to be selected near the beginning.
+The notebook must allow the model option to be selected near the beginning: `cnn`, `logreg_raw`, or `resnet_linear`.
 
 ### Case 1: Frozen ImageNet ResNet-18 embedding + linear classifier
 
@@ -82,6 +82,13 @@ The notebook must allow the model option to be selected near the beginning.
 - Keep images at `28x28`, one channel, and normalize using MNIST mean and standard deviation.
 - Train all CNN parameters locally on each client.
 - Send the complete local model parameters to the server for FedAvg.
+
+### Case 3: Multinomial logistic regression on raw MNIST
+
+- Normalize each MNIST image with MNIST mean and standard deviation, then flatten it from `1x28x28` to 784 features.
+- Use one trainable `Linear(784, 10)` layer with no hidden layer.
+- Train from scratch with local SGD and aggregate its parameters with FedAvg.
+- This provides a simple raw-pixel linear baseline. It does not use ResNet embeddings.
 
 ## Step 5: Run FedAvg
 
