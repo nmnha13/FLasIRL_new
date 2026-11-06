@@ -15,7 +15,7 @@ Implementation target: a Google Colab notebook optimized for fast execution on a
 - Server aggregation: standard FedAvg using client dataset sizes as weights.
 - Participation: all 25 clients participate in every round.
 - No runtime device-selection logic is required; the notebook assumes a Colab T4 GPU.
-- Use `FLasIRL_new` as the Drive project folder name to avoid shell issues with parentheses.
+- Use `FLasIRL(new)` as the Drive project folder name.
 - Use separate seeds for partitioning, model initialization, and batch ordering; save the seed bases in run metadata.
 - Never use one shared global RNG for batch ordering. Derive a deterministic batch seed from `(batch_seed, round, client_id, local_epoch)` and create a fresh local `torch.Generator` for that combination.
 
@@ -25,12 +25,12 @@ Implementation target: a Google Colab notebook optimized for fast execution on a
 - Set random seeds for reproducibility.
 - Mount Google Drive.
 - Define the project root:
-  `MyDrive/FLasIRL_new`.
+  `MyDrive/FLasIRL(new)`.
 - Define folder structure: dataset in `data/mnist`, partitions and partition charts in `data/mnist/partitions/IID`, embeddings directly in `data/mnist`, and experiment runs in `baseline/run{run_id}`.
 
 ## Step 2: Download and load MNIST
 
-- Use `MyDrive/FLasIRL_new/data/mnist` as the dataset directory.
+- Use `MyDrive/FLasIRL(new)/data/mnist` as the dataset directory.
 - Download MNIST only when it is not already present.
 - Use the standard MNIST train/test split.
 - Use model-specific preprocessing; do not share one normalization pipeline between the two model options.

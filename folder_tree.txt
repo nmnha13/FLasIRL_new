@@ -1,6 +1,10 @@
-PROJECT_ROOT/ (ví dụ: /content/drive/MyDrive/FLasIRL_new)
+PROJECT_ROOT/ (ví dụ: /content/drive/MyDrive/FLasIRL(new))
 │
-├── baseline/                                     <-- Toàn bộ kết quả thực nghiệm
+├── baseline.ipynb                                <-- Notebook chạy FedAvg IID
+├── fedavg_noniid.ipynb                           <-- Notebook chạy FedAvg Non-IID (Dirichlet)
+├── partition_dirichlet.py                        <-- Script tạo partition Non-IID Dirichlet
+│
+├── baseline/                                     <-- Kết quả thực nghiệm IID
 │   ├── run1/
 │   │   ├── checkpoint_last.pt                    <-- Checkpoint duy nhất cập nhật mỗi round
 │   │   ├── config.json                           <-- Cấu hình run 1
@@ -10,6 +14,16 @@ PROJECT_ROOT/ (ví dụ: /content/drive/MyDrive/FLasIRL_new)
 │   │   └── summary.json                          <-- Tóm tắt kết quả
 │   ├── run2/
 │   └── run3/
+│
+├── fedavg_noniid/                                <-- Kết quả thực nghiệm Non-IID
+│   ├── run1/
+│   │   ├── checkpoint_last.pt                    <-- Checkpoint duy nhất cập nhật mỗi round
+│   │   ├── config.json                           <-- Cấu hình run 1 (lưu alpha, etc.)
+│   │   ├── final_model_parameters.pt             <-- Trọng số global model cuối cùng
+│   │   ├── metrics.csv                           <-- Log từng round
+│   │   ├── metrics.png                           <-- Biểu đồ Loss & Accuracy
+│   │   └── summary.json                          <-- Tóm tắt kết quả
+│   └── run2/
 │
 └── data/
     └── mnist/                                    <-- DATA_DIR
@@ -28,6 +42,6 @@ PROJECT_ROOT/ (ví dụ: /content/drive/MyDrive/FLasIRL_new)
             │   ├── iid_25_seed20261106.pt        <-- File partition IID
             │   └── partition_25_clients_seed20261106.png  <-- Chart phân bố IID
             │
-            └── Dirichlet/                        <-- PARTITION_DIR (Non-IID do partition_dirichlet.py tạo)
+            └── Dirichlet/                        <-- PARTITION_DIR (Non-IID Dirichlet)
                 ├── dirichlet_alpha0.5_25_seed20261106.pt
                 └── partition_dirichlet_alpha0.5_25_clients_seed20261106.png

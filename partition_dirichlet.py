@@ -25,9 +25,9 @@ def get_default_project_root() -> Path:
     try:
         from google.colab import drive
         drive.mount('/content/drive')
-        project_root = Path('/content/drive/MyDrive/FLasIRL_new')
+        project_root = Path('/content/drive/MyDrive/FLasIRL(new)')
     except ImportError:
-        project_root = Path.cwd() / 'FLasIRL_new' if not Path('/content').exists() else Path('/content/FLasIRL_new')
+        project_root = Path.cwd() / 'FLasIRL(new)' if not Path('/content').exists() else Path('/content/FLasIRL(new)')
 
     if not project_root.parent.exists():
         project_root = Path.cwd()
