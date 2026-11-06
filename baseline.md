@@ -99,7 +99,7 @@ For fast execution on the T4, keep MNIST tensors and cached embeddings on the GP
 
 All clients must start each round from the same global model state. Batch ordering must be generated from the deterministic `(round, client_id, local_epoch)` seed, so resuming from a checkpoint or changing client execution order produces the same batches. Since the baseline CNN and linear classifier contain no BatchNorm or other persistent buffers, FedAvg only needs to aggregate `model.parameters()`.
 
-Append metrics to CSV immediately after every round and flush the file. With `checkpoint_last.pt` updated after every round, a run interrupted at any round can resume directly from that round by setting `RESUME = True`.
+Append metrics to CSV immediately after every round and flush the file. With `checkpoint_last.pt` updated after every round, a run interrupted at any round can resume directly based on `RUN_ID`, with automatic verification that model hyperparameters and seeds match the saved configuration.
 
 ## Step 6: Save experiment results
 
