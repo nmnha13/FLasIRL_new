@@ -26,7 +26,7 @@ Implementation target: a Google Colab notebook optimized for fast execution on a
 - Mount Google Drive.
 - Define the project root:
   `MyDrive/FLasIRL_new`.
-- Define separate folders for cached data, partitions, embeddings, charts, and baseline experiment runs (`baseline/run{run_id}`).
+- Define folder structure: dataset in `data/mnist`, partitions and partition charts in `data/mnist/partitions/IID`, embeddings directly in `data/mnist`, and experiment runs in `baseline/run{run_id}`.
 
 ## Step 2: Download and load MNIST
 
@@ -45,7 +45,7 @@ Implementation target: a Google Colab notebook optimized for fast execution on a
 - Within each local epoch, generate the client’s permutation from its derived local generator and split that permutation into batches. Do not depend on client execution order, global RNG state, or DataLoader worker RNG state.
 - Keep the final incomplete batch (`drop_last=False`): each client has 2,400 samples, resulting in 37 batches of 64 and one batch of 32. This ensures every sample contributes to training.
 - Draw a stacked bar chart showing each client’s class distribution and sample count.
-- Save the chart to Google Drive.
+- Save the chart directly to the partition folder (`data/mnist/partitions/IID`).
 
 ## Step 4: Select and prepare the model
 
@@ -60,7 +60,7 @@ The notebook must allow the model option to be selected near the beginning.
 - Remove the original ResNet classification head and use the remaining network to produce one embedding vector per image.
 - Freeze all ResNet parameters.
 - During embedding extraction, call `backbone.eval()` and use `torch.no_grad()` so BatchNorm running statistics are not updated.
-- Compute embeddings once for the MNIST train and test sets, then cache them in the dataset folder for reuse.
+- Compute embeddings once for the MNIST train and test sets, then cache them directly in the dataset folder (`data/mnist`) for reuse.
 - Include the backbone name, pretrained-weight version, resize size, normalization type, and dataset split in the embedding-cache key.
 - Train only a linear layer mapping the embedding vector to 10 MNIST classes.
 - During federated training, each client trains its local copy of the linear layer on its cached embeddings. Only the linear-layer parameters are sent to the server and aggregated.
@@ -93,13 +93,13 @@ For each of the 40 rounds:
 4. Aggregate parameters on the server with weighted FedAvg.
 5. Evaluate the aggregated global model on the complete MNIST training set and test set.
 6. Define `global_train_loss` as the loss of the aggregated global model on the complete training set. Save `global_train_loss`, `test_loss`, and `test_accuracy`.
-7. Save a checkpoint after every round, including the global model state, completed round, optimizer state if present, and random-number-generator states.
+7. Update `checkpoint_last.pt` after every round via atomic write, including global model state, completed round, and random-number-generator states.
 
 For fast execution on the T4, keep MNIST tensors and cached embeddings on the GPU when memory permits. Use tensor indices to create client batches instead of PIL-based `DataLoader` preprocessing. Perform ResNet resize, channel repetition, and ImageNet normalization on the GPU in batches during the one-time embedding extraction. Reuse cached embeddings during all subsequent rounds.
 
 All clients must start each round from the same global model state. Batch ordering must be generated from the deterministic `(round, client_id, local_epoch)` seed, so resuming from a checkpoint or changing client execution order produces the same batches. Since the baseline CNN and linear classifier contain no BatchNorm or other persistent buffers, FedAvg only needs to aggregate `model.parameters()`.
 
-Append metrics to CSV or JSONL immediately after every round and flush the file. Since a checkpoint is saved after every round, a run interrupted at round 37 can resume directly from round 37 without repeating completed rounds. If an earlier checkpoint is selected manually, truncate metrics and checkpoints after that round before resuming.
+Append metrics to CSV immediately after every round and flush the file. With `checkpoint_last.pt` updated after every round, a run interrupted at any round can resume directly from that round by setting `RESUME = True`.
 
 ## Step 6: Save experiment results
 
@@ -109,7 +109,7 @@ Create a unique run ID and save:
 - Number of clients, rounds, local epochs, batch size, learning rate, and optimizer.
 - Partition seed, model seed, batch-order seed, and dataset/partition identifiers.
 - Per-round `global_train_loss`, test loss, and test accuracy.
-- Per-round checkpoints and final model parameters.
+- Latest checkpoint (`checkpoint_last.pt`) and final model parameters (`final_model_parameters.pt`).
 - Final accuracy as the primary reported accuracy.
 - Best test accuracy only as a secondary diagnostic; do not use it as the main reported result.
 

@@ -1,0 +1,33 @@
+PROJECT_ROOT/ (ví dụ: /content/drive/MyDrive/FLasIRL_new)
+│
+├── baseline/                                     <-- Toàn bộ kết quả thực nghiệm
+│   ├── run1/
+│   │   ├── checkpoint_last.pt                    <-- Checkpoint duy nhất cập nhật mỗi round
+│   │   ├── config.json                           <-- Cấu hình run 1
+│   │   ├── final_model_parameters.pt             <-- Trọng số global model cuối cùng
+│   │   ├── metrics.csv                           <-- Log từng round
+│   │   ├── metrics.png                           <-- Biểu đồ Loss & Accuracy
+│   │   └── summary.json                          <-- Tóm tắt kết quả
+│   ├── run2/
+│   └── run3/
+│
+└── data/
+    └── mnist/                                    <-- DATA_DIR
+        ├── MNIST/
+        │   └── raw/                              <-- Dữ liệu gốc torchvision tải về
+        │       ├── train-images-idx3-ubyte.gz
+        │       ├── train-labels-idx1-ubyte.gz
+        │       ├── t10k-images-idx3-ubyte.gz
+        │       └── t10k-labels-idx1-ubyte.gz
+        │
+        ├── resnet18_sz112_train_6b2f8a1c.pt      <-- Embedding train (lưu thẳng tại mnist)
+        ├── resnet18_sz112_test_9e4a3d21.pt       <-- Embedding test (lưu thẳng tại mnist)
+        │
+        └── partitions/
+            ├── IID/                              <-- PARTITION_DIR (IID)
+            │   ├── iid_25_seed20261106.pt        <-- File partition IID
+            │   └── partition_25_clients_seed20261106.png  <-- Chart phân bố IID
+            │
+            └── Dirichlet/                        <-- PARTITION_DIR (Non-IID do partition_dirichlet.py tạo)
+                ├── dirichlet_alpha0.5_25_seed20261106.pt
+                └── partition_dirichlet_alpha0.5_25_clients_seed20261106.png
