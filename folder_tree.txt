@@ -39,9 +39,9 @@ PROJECT_ROOT/ (ví dụ: /content/drive/MyDrive/FLasIRL(new))
         │
         └── partitions/
             ├── IID/                              <-- PARTITION_DIR (IID)
-            │   ├── iid_25_seed20261106.pt        <-- File partition IID
-            │   └── partition_25_clients_seed20261106.png  <-- Chart phân bố IID
+            │   ├── iid_25_seed42.pt        <-- File partition IID
+            │   └── partition_25_clients_seed42.png  <-- Chart phân bố IID
             │
             └── Dirichlet/                        <-- PARTITION_DIR (Non-IID Dirichlet)
-                ├── dirichlet_alpha0.5_25_seed20261106.pt
-                └── partition_dirichlet_alpha0.5_25_clients_seed20261106.png
+                ├── dirichlet_alpha0.5_25_seed42.pt
+                └── partition_dirichlet_alpha0.5_25_clients_seed42.png

@@ -38,7 +38,7 @@ def generate_dirichlet_partition(
     train_labels: torch.Tensor,
     num_clients: int = 25,
     alpha: float = 0.5,
-    seed: int = 20261106,
+    seed: int = 42,
     min_samples: int = 10,
     max_retries: int = 100,
 ) -> tuple[list[torch.Tensor], torch.Tensor]:
@@ -162,7 +162,7 @@ def main():
     parser = argparse.ArgumentParser(description="Tạo partition Non-IID Dirichlet cho MNIST trong Federated Learning")
     parser.add_argument("--alpha", type=float, default=0.5, help="Hệ số tập trung Dirichlet alpha (mặc định: 0.5)")
     parser.add_argument("--num_clients", type=int, default=25, help="Số lượng client (mặc định: 25)")
-    parser.add_argument("--seed", type=int, default=20261106, help="Hạt giống ngẫu nhiên (mặc định: 20261106)")
+    parser.add_argument("--seed", type=int, default=42, help="Hạt giống ngẫu nhiên (mặc định: 42)")
     parser.add_argument("--min_samples", type=int, default=10, help="Số lượng mẫu tối thiểu cho mỗi client (mặc định: 10)")
     parser.add_argument("--project_root", type=str, default=None, help="Đường dẫn thư mục dự án (tùy chọn)")
     parser.add_argument("--no_plot", action="store_true", help="Không vẽ biểu đồ phân bố")
